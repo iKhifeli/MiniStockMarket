@@ -2,21 +2,36 @@ import java.util.ArrayList;
 
 public class Server {
     private Database db;
-    ArrayList<Client> clients = new ArrayList<Client>();
+    private ArrayList<Client> clients = new ArrayList<Client>();
 
     public Server(Database db, ArrayList<Client> clients) {
         this.db = db;
         this.clients = clients;
     }
 
-    public void operate(){
-        for (Client client:clients) {
+    public void operate(Client client){
+        if(db.isAvailable()){
+            System.out.println("DB is available for trading!");
+            db.makeUnavailable();
+            System.out.println("DB is unavailable because one client is currently trading");
             if(client.isBuyer){
-                db.buyOffer(client, "Offer1", 20);
-            } else
-                if (client.isSeller) {
-                    // do something else
+                System.out.println("The client is a buyer");
+                if(((Buyer)client).wantsToTrade()){
+                    System.out.println("The buyer has find a suitable offer for him");
+                    if(db.buyOffer(client, "Offer1", 20)){ // this is SUBJECT TO CHANGE
+                        ((Buyer)client).doesNotWantToTradeAnymore();
+                        System.out.println("The buyer has bought an offer and does not want to trade anymore");
+                        db.makeAvailable();
+                        System.out.println("DB is available again!");
+                        return;
+                    }
                 }
+                System.out.println("The buyer does not want to trade right now!");
+            }
+        }
+        if(!db.isAvailable()) {
+            db.makeAvailable();
+            System.out.println("DB is available again!");
         }
     }
 }
