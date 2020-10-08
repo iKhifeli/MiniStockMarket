@@ -28,6 +28,19 @@ public class Server {
                 }
                 System.out.println("The buyer does not want to trade right now!");
             }
+            else{
+                System.out.println("The client is a seller");
+                if(((Seller)client).wantsToTrade()) {
+                    System.out.println("The seller wants to list his offer");
+                    if(db.listNewOffer("Tesla", 762, 984)){
+                        ((Seller)client).doesNotWantToTradeAnymore();
+                        System.out.println("The seller has successfully list his offer");
+                        db.makeAvailable();
+                        System.out.println("DB is available again!");
+                        return;
+                    }
+                }
+            }
         }
         if(!db.isAvailable()) {
             db.makeAvailable();

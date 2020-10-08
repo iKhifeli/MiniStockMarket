@@ -14,7 +14,7 @@ class Buyer extends Client{
         private Random rand = new Random();
         private boolean wantsToTrade;
         private double balance = 1 + (10000 - 1) * rand.nextDouble(); // the Buyer will get a random amount of currency between 1 and 10000
-        private ArrayList<Offer> assets = new ArrayList<>();
+        private ArrayList<Offer> assets = new ArrayList<Offer>();
 
     public Buyer() {
         isBuyer=true;
@@ -53,7 +53,9 @@ class Buyer extends Client{
 
 class Seller extends Client{
     private Random rand = new Random();
+    //private ArrayList<Offer> offers = new ArrayList<Offer>();
     private Offer offer;
+    private double balance = 0;
 
     public Seller(Offer offer) {
         isBuyer=false;
@@ -64,9 +66,14 @@ class Seller extends Client{
     public boolean wantsToTrade(){
         return this.wantsToTrade;
     }
+
     public void doesNotWantToTradeAnymore(){
         if(wantsToTrade){
             wantsToTrade=false;
         }
+    }
+
+    public void setBalance(double new_balance){
+        balance = new_balance;
     }
 }

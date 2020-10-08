@@ -33,22 +33,21 @@ public class Database {
         for (Offer offer:offers) {
             if(wanted_offer.equals(offer.getName())){
                 if(offer.getQuantity() >= wanted_quantity) {
-                    if (client.isBuyer) {
-                        if (((Buyer) client).getBalance() >= wanted_quantity * offer.getValue()) {
-                            int current_quantity = offer.getQuantity();
-                            offer.setQuantity(current_quantity - wanted_quantity);
-                            ((Buyer) client).addAsset(offer);
-                            double newBalance = ((Buyer) client).getBalance() - (wanted_quantity * offer.getValue());
-                            ((Buyer) client).setBalance(newBalance);
-                            if (offer.getQuantity() == 0) {
-                                offers.remove(offer);
-                            }
-                            System.out.println("The buyer has purchased a number of " + wanted_quantity + " of " + offer.getName());
-                            return true;
+                    if (((Buyer) client).getBalance() >= wanted_quantity * offer.getValue()) {
+                        int current_quantity = offer.getQuantity();
+                        offer.setQuantity(current_quantity - wanted_quantity);
+                        Offer temp_offer = new Offer(offer.getName(), offer.getValue(), wanted_quantity);
+                        ((Buyer) client).addAsset(temp_offer);
+                        double newBalance = ((Buyer) client).getBalance() - (wanted_quantity * offer.getValue());
+                        ((Buyer) client).setBalance(newBalance);
+                        if (offer.getQuantity() == 0) {
+                            offers.remove(offer);
                         }
-                        System.out.println("The buyer does not have enough money for the quantity of shares he wants");
-                        return false;
+                        System.out.println("The buyer has purchased a number of " + wanted_quantity + " of " + offer.getName());
+                        return true;
                     }
+                    System.out.println("The buyer does not have enough money for the quantity of shares he wants");
+                    return false;
                 }
                 System.out.println("The buyer wants to buy a larger amount of shares that the ones available");
                 return false;
@@ -58,15 +57,15 @@ public class Database {
         return false;
     }
 
-    public void sellOffer(Client client, Offer new_offer){
-        for (Offer offer:offers) {
-            if(new_offer.getName().equals(offer.getName())){
-                return;
+    public boolean listNewOffer(String name, double value, int quantity){
+        for (Offer offer:offers){
+            if(offer.getName().equals(name)){
+                return false;
             }
         }
+        Offer new_offer = new Offer(name, value, quantity);
         offers.add(new_offer);
+        System.out.println("The new offer " + new_offer.getName() + " has been added to DB :)");
+        return true;
     }
-
-
-
 }
