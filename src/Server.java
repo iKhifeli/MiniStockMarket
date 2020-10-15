@@ -17,8 +17,8 @@ public class Server {
             if(client.isBuyer){
                 System.out.println("The client is a buyer");
                 if(((Buyer)client).wantsToTrade()){
-                    System.out.println("The buyer has find a suitable offer for him");
-                    if(db.buyOffer(client, "Offer1", 20)){ // this is SUBJECT TO CHANGE
+                    System.out.println("The buyer wants to trade");
+                    if(db.buyOffer(client, ((Buyer) client).getWantedOffer(), ((Buyer) client).getWantedQuantity())){ // this is SUBJECT TO CHANGE
                         ((Buyer)client).doesNotWantToTradeAnymore();
                         System.out.println("The buyer has bought an offer and does not want to trade anymore");
                         db.makeAvailable();
@@ -32,14 +32,16 @@ public class Server {
                 System.out.println("The client is a seller");
                 if(((Seller)client).wantsToTrade()) {
                     System.out.println("The seller wants to list his offer");
-                    if(db.listNewOffer("Tesla", 762, 984)){
+                    if(db.listNewOffer(((Seller) client).getOffer())){
                         ((Seller)client).doesNotWantToTradeAnymore();
                         System.out.println("The seller has successfully list his offer");
                         db.makeAvailable();
                         System.out.println("DB is available again!");
                         return;
                     }
+                    System.out.println("The offer already exists");
                 }
+                System.out.println("Seller does not want to trade!");
             }
         }
         if(!db.isAvailable()) {

@@ -3,6 +3,7 @@ public class Offer {
     private String name;
     private double value;
     private int quantity;
+    private Seller seller;
 
     public Offer(String name, double value, int quantity) {
         this.name = name;
@@ -28,5 +29,13 @@ public class Offer {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 }

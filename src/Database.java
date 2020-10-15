@@ -40,6 +40,7 @@ public class Database {
                         ((Buyer) client).addAsset(temp_offer);
                         double newBalance = ((Buyer) client).getBalance() - (wanted_quantity * offer.getValue());
                         ((Buyer) client).setBalance(newBalance);
+                        offer.getSeller().setBalance(wanted_quantity * offer.getValue()); // TODO: think about this
                         if (offer.getQuantity() == 0) {
                             offers.remove(offer);
                         }
@@ -52,18 +53,17 @@ public class Database {
                 System.out.println("The buyer wants to buy a larger amount of shares that the ones available");
                 return false;
             }
-            System.out.println("The buyer did not find something he liked");
         }
+        System.out.println("The buyer did not find something he liked");
         return false;
     }
 
-    public boolean listNewOffer(String name, double value, int quantity){
+    public boolean listNewOffer(Offer new_offer){
         for (Offer offer:offers){
-            if(offer.getName().equals(name)){
+            if(offer.getName().equals(new_offer.getName())){
                 return false;
             }
         }
-        Offer new_offer = new Offer(name, value, quantity);
         offers.add(new_offer);
         System.out.println("The new offer " + new_offer.getName() + " has been added to DB :)");
         return true;

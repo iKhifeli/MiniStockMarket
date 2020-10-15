@@ -13,13 +13,33 @@ public abstract class Client {
 class Buyer extends Client{
         private Random rand = new Random();
         private boolean wantsToTrade;
+        private String wantedOffer;
+        private int wantedQuantity;
         private double balance = 1 + (10000 - 1) * rand.nextDouble(); // the Buyer will get a random amount of currency between 1 and 10000
         private ArrayList<Offer> assets = new ArrayList<Offer>();
 
-    public Buyer() {
+    public Buyer(String wantedOffer, int wantedQuantity) {
+        this.wantedOffer = wantedOffer;
+        this.wantedQuantity = wantedQuantity;
         isBuyer=true;
         isSeller=false;
         wantsToTrade=rand.nextBoolean();
+    }
+
+    public String getWantedOffer() {
+        return wantedOffer;
+    }
+
+    public void setWantedOffer(String wantedOffer) {
+        this.wantedOffer = wantedOffer;
+    }
+
+    public int getWantedQuantity() {
+        return wantedQuantity;
+    }
+
+    public void setWantedQuantity(int wantedQuantity) {
+        this.wantedQuantity = wantedQuantity;
     }
 
     public double getBalance() {
@@ -61,6 +81,7 @@ class Seller extends Client{
         isBuyer=false;
         isSeller=true;
         this.offer = offer;
+        offer.setSeller(this);
         wantsToTrade=rand.nextBoolean();
     }
     public boolean wantsToTrade(){
@@ -73,7 +94,16 @@ class Seller extends Client{
         }
     }
 
-    public void setBalance(double new_balance){
-        balance = new_balance;
+    public Offer getOffer(){
+        return offer;
     }
+
+    public void setBalance(double acquity){
+        balance = balance + acquity;
+    }
+
+    public double getBalance(){
+        return balance;
+    }
+
 }
