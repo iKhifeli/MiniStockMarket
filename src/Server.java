@@ -2,14 +2,12 @@ import java.util.ArrayList;
 
 public class Server {
     private Database db;
-    private ArrayList<Client> clients = new ArrayList<Client>();
 
-    public Server(Database db, ArrayList<Client> clients) {
+    public Server(Database db) {
         this.db = db;
-        this.clients = clients;
     }
 
-    public void operate(Client client){
+    public synchronized void operate(Client client){
         if(db.isAvailable()){
             System.out.println("DB is available for trading!");
             db.makeUnavailable();
@@ -48,5 +46,9 @@ public class Server {
             db.makeAvailable();
             System.out.println("DB is available again!");
         }
+    }
+
+    public String printOffers(){
+        return db.printOffers();
     }
 }
