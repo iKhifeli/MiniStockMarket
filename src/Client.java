@@ -18,7 +18,6 @@ class Buyer extends Client implements Runnable{
     private int wantedQuantity;
     private double balance = 1 + (10000 - 1) * rand.nextDouble(); // the Buyer will get a random amount of currency between 1 and 10000
     private ArrayList<Offer> assets = new ArrayList<Offer>();
-    private boolean hasAccess = false;
     private String name;
 
     public Buyer(String wantedOffer, int wantedQuantity, Server server, String name) {
@@ -34,14 +33,6 @@ class Buyer extends Client implements Runnable{
 
     public String getName() {
         return name;
-    }
-
-    public boolean hasAccess() {
-        return hasAccess;
-    }
-
-    public void setAccess(boolean hasAccess) {
-        this.hasAccess = hasAccess;
     }
 
     public String getWantedOffer() {

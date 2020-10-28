@@ -4,19 +4,12 @@ public class Offer {
     private double value;
     private int quantity;
     private Seller seller;
+    public boolean availability = true;
 
     public Offer(String name, double value, int quantity) {
         this.name = name;
         this.value = value;
         this.quantity = quantity;
-    }
-
-    public synchronized void requestAccess(Client client) {
-        ((Buyer)client).setAccess(true);
-    }
-
-    public void denyAccess(Client client) {
-        ((Buyer)client).setAccess(false);
     }
 
     public String getName() {
@@ -45,5 +38,13 @@ public class Offer {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public synchronized boolean hasAvailability() {
+        return availability;
+    }
+
+    public synchronized void setAvailability(boolean availability) {
+        this.availability = availability;
     }
 }

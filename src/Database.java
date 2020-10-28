@@ -17,7 +17,17 @@ public class Database {
         return res.toString();
     }
 
-    public synchronized void accessOffer(Client client, String wanted_offer, int wanted_quantity, Offer offer) {
+    public synchronized void accessOffer(Client client, int wanted_quantity, Offer offer) {
+        while(!offer.hasAvailability()){
+            try{
+                wait();
+            }catch(InterruptedException e){
+                Thread.currentThread().interrupt();
+                System.out.println("Thread interrupted" + e);
+            }
+        }
+        offer.setAvailability(false);
+
         int current_quantity = offer.getQuantity();
         offer.setQuantity(current_quantity - wanted_quantity);
         Offer temp_offer = new Offer(offer.getName(), offer.getValue(), wanted_quantity);
@@ -28,7 +38,9 @@ public class Database {
         if (offer.getQuantity() == 0) {
             offers.remove(offer);
         }
-        System.out.println("The buyer " + ((Buyer)client).getName() + " has purchased a number of " + wanted_quantity + " of " + offer.getName());
+        System.out.println("The buyer " + ((Buyer)client).getName() + " has purchased a number of " + wanted_quantity + " of " + offer.getName() + "-----------------------------------------------");
+
+        offer.setAvailability(true);
     }
 
     public boolean buyOffer(Client client, String wanted_offer, int wanted_quantity){
@@ -36,17 +48,17 @@ public class Database {
             if(wanted_offer.equals(offer.getName())){
                 if(offer.getQuantity() >= wanted_quantity) {
                     if(((Buyer) client).getBalance() >= wanted_quantity * offer.getValue()) {
-                        accessOffer(client, wanted_offer, wanted_quantity, offer);
+                        accessOffer(client, wanted_quantity, offer);
                         return true;
                     }
                     System.out.println("The buyer " + ((Buyer)client).getName() + " does not have enough money for the quantity of shares he wants");
                     return false;
                 }
+                System.out.println("The buyer " + ((Buyer)client).getName() + " wants to buy a larger amount of shares that the ones available");
+                return false;
             }
-            System.out.println("The buyer " + ((Buyer)client).getName() + " wants to buy a larger amount of shares that the ones available");
-            return false;
-            }
-        System.out.println("The buyer " + ((Buyer)client).getName() + " did not find something he liked");
+        }
+        System.out.println("The buyer " + ((Buyer)client).getName() + " did not find something he liked: " + wanted_offer);
         return false;
     }
 

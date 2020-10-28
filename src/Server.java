@@ -8,18 +8,17 @@ public class Server {
     }
 
     public void operate(Client client){
-        System.out.println("DB is unavailable because one client is currently trading");
         if(client.isBuyer){
             System.out.println("The client " + ((Buyer)client).getName() + " is a buyer");
             if(((Buyer)client).wantsToTrade()){
-                System.out.println("The " + ((Buyer)client).getName() + " wants to trade");
+                System.out.println("The buyer " + ((Buyer)client).getName() + " is looking for " + ((Buyer) client).getWantedOffer() + " offer");
                 if(db.buyOffer(client, ((Buyer) client).getWantedOffer(), ((Buyer) client).getWantedQuantity())){ // this is SUBJECT TO CHANGE
                     ((Buyer)client).doesNotWantToTradeAnymore();
                     System.out.println("The buyer " + ((Buyer)client).getName() + " has bought an offer and does not want to trade anymore");
                     return;
                 }
             }
-            System.out.println("The buyer does not want to trade right now!");
+
         } else {
             System.out.println("The client is a seller");
             if(((Seller)client).wantsToTrade()) {
