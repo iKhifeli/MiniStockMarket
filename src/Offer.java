@@ -20,10 +20,6 @@ public class Offer {
         return value;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
-
     public synchronized int getQuantity() {
         return quantity;
     }
@@ -36,7 +32,7 @@ public class Offer {
         return seller;
     }
 
-    public synchronized void setSeller(Seller seller) {
+    public void setSeller(Seller seller) {
         this.seller = seller;
     }
 
