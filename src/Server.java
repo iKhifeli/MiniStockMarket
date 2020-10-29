@@ -18,7 +18,6 @@ public class Server {
                     return;
                 }
             }
-
         } else {
             System.out.println("The client is a seller");
             if(((Seller)client).wantsToTrade()) {
@@ -33,7 +32,7 @@ public class Server {
         }
     }
 
-    public String printOffers(){
+    String printOffers(){
         return db.printOffers();
     }
 }
