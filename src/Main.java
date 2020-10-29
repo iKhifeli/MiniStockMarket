@@ -10,17 +10,17 @@ public class Main {
         Database db = new Database(offers);
         Server sv = new Server(db);
 
-        Buyer buyer1 = new Buyer("BT", 5, sv, "AAA");
+        Buyer buyer1 = new Buyer("Colgate", 5, sv, "AAA");
         Buyer buyer2 = new Buyer("BT", 5, sv, "BBB");
-        Buyer buyer3 = new Buyer("BT", 5, sv, "CCC");
+        Buyer buyer3 = new Buyer("Colgate", 5, sv, "CCC");
         Buyer buyer4 = new Buyer("BT", 5, sv, "DDD");
         Buyer buyer5 = new Buyer("Colgate", 5, sv, "EEE");
-        Buyer buyer6 = new Buyer("Colgate", 5, sv, "FFF");
+        Buyer buyer6 = new Buyer("BT", 5, sv, "FFF");
         Buyer buyer7 = new Buyer("Colgate", 5, sv, "JJJ");
-        Buyer buyer8 = new Buyer("Colgate", 5, sv, "KKK");
+        Buyer buyer8 = new Buyer("BT", 5, sv, "KKK");
         Buyer buyer9 = new Buyer("Colgate", 5, sv, "LLL");
-        Seller seller1 = new Seller(o1, sv);
-        Seller seller2 = new Seller(o2, sv);
+        Seller seller1 = new Seller(o1, sv, "Seller 1");
+        Seller seller2 = new Seller(o2, sv, "Seller 2");
 
         Thread thread1 = new Thread(seller1);
         Thread thread2 = new Thread(seller2);
@@ -37,7 +37,6 @@ public class Main {
 
         thread1.start();
         thread2.start();
-        for(int i=0; i<500000; i++) {}
         thread3.start();
         thread4.start();
         thread5.start();
@@ -79,6 +78,11 @@ public class Main {
         System.out.println(buyer7.getName() + " -> " + buyer7.printAssets());
         System.out.println(buyer8.getName() + " -> " + buyer8.printAssets());
         System.out.println(buyer9.getName() + " -> " + buyer9.printAssets());
+
+
+        System.out.println(seller1.getName() + " " + seller1.getBalance());
+        System.out.println(seller2.getName() + " " + seller2.getBalance());
+
 
     }
 }
