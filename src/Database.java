@@ -67,11 +67,12 @@ public class Database {
         }
     }
 
-    public synchronized boolean listNewOffer(Offer new_offer){
-
-        for (Offer offer : offers) {
-            if (offer.getName().equals(new_offer.getName())) {
-                return false;
+    public boolean listNewOffer(Offer new_offer){
+        synchronized (offers) {
+            for (Offer offer : offers) {
+                if (offer.getName().equals(new_offer.getName())) {
+                    return false;
+                }
             }
         }
         offers.add(new_offer);
