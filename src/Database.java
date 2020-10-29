@@ -36,7 +36,7 @@ public class Database {
         ((Buyer) client).addAsset(temp_offer);
         double newBalance = ((Buyer) client).getBalance() - (wanted_quantity * offer.getValue());
         ((Buyer) client).setBalance(newBalance);
-        //offer.getSeller().setBalance(wanted_quantity * offer.getValue()); // TODO: think about this
+        offer.getSeller().setBalance(wanted_quantity * offer.getValue());
         if (offer.getQuantity() == 0) {
             offers.remove(offer);
         }
