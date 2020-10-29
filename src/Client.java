@@ -5,10 +5,12 @@ public abstract class Client {
     boolean isBuyer = false;
     boolean isSeller = false;
     boolean wantsToTrade = false;
-    protected Server server;
+    protected String name;
+    Server server;
 
     public abstract boolean wantsToTrade();
     public abstract void doesNotWantToTradeAnymore();
+    public abstract String getName();
 }
 
 class Buyer extends Client implements Runnable{
@@ -18,7 +20,6 @@ class Buyer extends Client implements Runnable{
     private int wantedQuantity;
     private double balance = 1 + (10000 - 1) * rand.nextDouble(); // the Buyer will get a random amount of currency between 1 and 10000
     private ArrayList<Offer> assets = new ArrayList<Offer>();
-    private String name;
 
     public Buyer(String wantedOffer, int wantedQuantity, Server server, String name) {
         this.wantedOffer = wantedOffer;
@@ -30,7 +31,7 @@ class Buyer extends Client implements Runnable{
         this.server = server;
         this.name = name;
     }
-
+    @Override
     public String getName() {
         return name;
     }
@@ -39,16 +40,8 @@ class Buyer extends Client implements Runnable{
         return wantedOffer;
     }
 
-    public void setWantedOffer(String wantedOffer) {
-        this.wantedOffer = wantedOffer;
-    }
-
     public int getWantedQuantity() {
         return wantedQuantity;
-    }
-
-    public void setWantedQuantity(int wantedQuantity) {
-        this.wantedQuantity = wantedQuantity;
     }
 
     public double getBalance() {
@@ -93,7 +86,7 @@ class Seller extends Client implements Runnable{
     private Offer offer;
     private double balance = 0;
 
-    public Seller(Offer offer, Server server) {
+    public Seller(Offer offer, Server server, String name) {
         isBuyer = false;
         isSeller = true;
         this.offer = offer;
@@ -101,6 +94,7 @@ class Seller extends Client implements Runnable{
         wantsToTrade = true;
         this.server = server;
         offer.setSeller(this);
+        this.name = name;
     }
     public boolean wantsToTrade(){
         return this.wantsToTrade;
@@ -110,6 +104,11 @@ class Seller extends Client implements Runnable{
         if(wantsToTrade){
             wantsToTrade = false;
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public Offer getOffer(){
