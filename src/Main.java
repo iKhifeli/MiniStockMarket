@@ -1,19 +1,19 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
+
 
 public class Main {
     public static void main(String[] args){
         Offer o1 = new Offer("BT", 133.42, 5);
         Offer o2 = new Offer("Colgate", 98.32, 5);
-        ArrayList<Offer> offers = new ArrayList<>();
+        List<Offer> offers = new ArrayList<Offer>();
         Database db = new Database(offers);
         Server sv = new Server(db);
 
         Buyer buyer1 = new Buyer("BT", 5, sv, "Gigel");
         Buyer buyer2 = new Buyer("BT", 5, sv, "Marcel");
-        Buyer buyer3 = new Buyer("Colgate", 5, sv, "Denis");
-        Buyer buyer4 = new Buyer("Colgate", 5, sv, "Danieeeel");
+        Buyer buyer3 = new Buyer("BT", 5, sv, "Denis");
+        Buyer buyer4 = new Buyer("BT", 5, sv, "Danieeeel");
         Seller seller1 = new Seller(o1, sv);
         Seller seller2 = new Seller(o2, sv);
 
@@ -49,5 +49,10 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println(sv.printOffers());
+        System.out.println(buyer1.getName() + " -> " + buyer1.printAssets());
+        System.out.println(buyer2.getName() + " -> " + buyer2.printAssets());
+        System.out.println(buyer3.getName() + " -> " + buyer3.printAssets());
+        System.out.println(buyer4.getName() + " -> " + buyer4.printAssets());
+
     }
 }

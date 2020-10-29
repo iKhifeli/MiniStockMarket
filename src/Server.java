@@ -25,7 +25,6 @@ public class Server {
                 System.out.println("The seller wants to list his offer");
                 if(db.listNewOffer(((Seller) client).getOffer())){
                     ((Seller)client).doesNotWantToTradeAnymore();
-                    System.out.println("The seller has successfully list his offer");
                     return;
                 }
                 System.out.println("The offer already exists");
