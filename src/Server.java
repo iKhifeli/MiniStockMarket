@@ -15,7 +15,6 @@ public class Server {
                 if(db.buyOffer(client, ((Buyer) client).getWantedOffer(), ((Buyer) client).getWantedQuantity())){ // this is SUBJECT TO CHANGE
                     ((Buyer)client).doesNotWantToTradeAnymore();
                     System.out.println("The buyer " + ((Buyer)client).getName() + " has bought an offer and does not want to trade anymore");
-                    return;
                 }
             }
         } else {

@@ -5,7 +5,7 @@ public abstract class Client {
     boolean isBuyer = false;
     boolean isSeller = false;
     boolean wantsToTrade = false;
-    protected String name;
+    String name;
     Server server;
 
     public abstract boolean wantsToTrade();

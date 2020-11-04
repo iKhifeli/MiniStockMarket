@@ -3,7 +3,7 @@ import java.util.List;
 
 
 public class Database {
-    private List<Offer> offers;
+    private final List<Offer> offers;
 
     public Database(List<Offer> offers) {
         this.offers = Collections.synchronizedList(offers);
@@ -74,8 +74,8 @@ public class Database {
                     return false;
                 }
             }
+            offers.add(new_offer);
         }
-        offers.add(new_offer);
         System.out.println("The new offer " + new_offer.getName() + " has been added to DB :)");
         return true;
     }

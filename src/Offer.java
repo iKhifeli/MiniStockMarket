@@ -4,7 +4,7 @@ public class Offer {
     private double value;
     private int quantity;
     private Seller seller;
-    public boolean availability = true;
+    private boolean availability = true;
 
     public Offer(String name, double value, int quantity) {
         this.name = name;
