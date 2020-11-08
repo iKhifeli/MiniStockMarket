@@ -79,7 +79,8 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(sv.printOffers());
+
+        System.out.println("\nBuyers and what the managed to buy :");
         System.out.println(buyer1.getName() + " -> " + buyer1.printAssets());
         System.out.println(buyer2.getName() + " -> " + buyer2.printAssets());
         System.out.println(buyer3.getName() + " -> " + buyer3.printAssets());
@@ -90,12 +91,16 @@ public class Main {
         System.out.println(buyer8.getName() + " -> " + buyer8.printAssets());
         System.out.println(buyer9.getName() + " -> " + buyer9.printAssets());
 
-
+        System.out.println("------------------------------------------------");
+        System.out.println("\nLeft over offers (they appeared to late in the 'data base' (Empty if none)) : \n");
         System.out.println(db.printOffers());
+        System.out.println("------------------------------------------------");
 
+        System.out.println("Sellers budget after they sold their offers: \n");
         System.out.println(seller1.getName() + " " + seller1.getBalance());
         System.out.println(seller2.getName() + " " + seller2.getBalance());
-
+        System.out.println(seller2.getName() + " " + seller3.getBalance());
+        System.out.println(seller2.getName() + " " + seller4.getBalance());
 
     }
 }

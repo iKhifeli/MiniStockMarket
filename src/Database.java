@@ -14,7 +14,7 @@ public class Database {
         StringBuilder res = new StringBuilder();
         if(!offers.isEmpty()) {
             for (Offer offer : offers) {
-                res.append(offer.getName()).append(" ").append(offer.getValue()).append(" ").append(offer.getQuantity()).append("\n");
+                res.append(offer.getName()).append(", Value: ").append(offer.getValue()).append(", Amount available: ").append(offer.getQuantity()).append("\n");
             }
         }
         return res.toString();
