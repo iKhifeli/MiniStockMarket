@@ -1,4 +1,3 @@
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -33,11 +32,11 @@ public class Database {
 
         int current_quantity = offer.getQuantity();
         offer.setQuantity(current_quantity - wanted_quantity);
-        Offer temp_offer = new Offer(offer.getName(), offer.getValue(), wanted_quantity);
+        Offer temp_offer = new Offer(offer.getName(), offer.getValue(), wanted_quantity, offer.getDate());
         ((Buyer) client).addAsset(temp_offer);
         double newBalance = ((Buyer) client).getBalance() - (wanted_quantity * offer.getValue());
         ((Buyer) client).setBalance(newBalance);
-        offer.getSeller().setBalance(wanted_quantity * offer.getValue());
+        offer.getCompany().setBalance(wanted_quantity * offer.getValue());
         if (offer.getQuantity() == 0) {
             offers.remove(offer);
         }
@@ -68,7 +67,7 @@ public class Database {
         return false;
     }
 
-    public boolean listNewOffer(Offer new_offer){
+    public synchronized boolean listNewOffer(Offer new_offer){
         for (Offer offer : offers) {
             if (offer.getName().equals(new_offer.getName())) {
                 return false;

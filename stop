@@ -48,7 +48,7 @@
  import java.util.ArrayList;[m
  import java.util.Random;[m
  [m
-[36m@@ -58,7 +60,7 @@[m [mclass Buyer extends Client{[m
+[36m@@ -58,7 +60,7 @@[m [mclass Client extends Client{[m
              wantsToTrade=false;[m
          }[m
      }[m
@@ -63,10 +63,10 @@
 [1m+++ b/src/Server.java[m
 [36m@@ -18,7 +18,7 @@[m [mpublic class Server {[m
                  System.out.println("The client is a buyer");[m
-                 if(((Buyer)client).wantsToTrade()){[m
+                 if(((Client)client).wantsToTrade()){[m
                      System.out.println("The buyer wants to trade");[m
-[31m-                    if(db.buyOffer(client, ((Buyer) client).getWantedOffer(), ((Buyer) client).getWantedQuantity())){ // this is SUBJECT TO CHANGE[m
-[32m+[m[32m                    if(db.buyOffer(client, ((Buyer) client).getWantedOffer(), ((Buyer) client).getWantedQuantity())){[m
-                         ((Buyer)client).doesNotWantToTradeAnymore();[m
+[31m-                    if(db.buyOffer(client, ((Client) client).getWantedOffer(), ((Client) client).getWantedQuantity())){ // this is SUBJECT TO CHANGE[m
+[32m+[m[32m                    if(db.buyOffer(client, ((Client) client).getWantedOffer(), ((Client) client).getWantedQuantity())){[m
+                         ((Client)client).doesNotWantToTradeAnymore();[m
                          System.out.println("The buyer has bought an offer and does not want to trade anymore");[m
                          db.makeAvailable();[m
