@@ -6,7 +6,7 @@ public class Main {
 
         List<Offer> offers = new ArrayList<Offer>();
         Database db = new Database(offers);
-        Server sv = new Server(db);
+        //Dispatcher d = new Dispatcher();
 
         System.out.println("\nBuyers and what the managed to buy :");
 

@@ -1,19 +1,21 @@
 import org.omg.PortableInterceptor.INACTIVE;
 
-public class Offer {
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-    private String name;
-    private double value;
-    private int quantity;
-    private String date;
-    private Company company;
-    private boolean availability = true;
+public class Offer {
     private enum state{
         INACTIVE,
         ACTIVE,
         PRICE_UPDATED,
         AMOUNT_UPDATED;
     }
+    private String name;
+    private double value;
+    private int quantity;
+    private String date;
+    private Company company;
+    private boolean availability = true;
     private state offer_state = state.INACTIVE;
 
     public Offer(String name, double value, int quantity, String date) {
