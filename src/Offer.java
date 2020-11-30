@@ -1,5 +1,3 @@
-import org.omg.PortableInterceptor.INACTIVE;
-
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -45,6 +43,10 @@ public class Offer {
         return value;
     }
 
+    public synchronized void setValue(double value) {
+        this.value = value;
+    }
+
     public synchronized int getQuantity() {
         return quantity;
     }
@@ -68,9 +70,10 @@ public class Offer {
     public synchronized void setAvailability(boolean availability) {
         this.availability = availability;
     }
+    /*
+    public synchronized void attachObserver(Buyer buyer){
+        company.attachObserver(buyer);
+    }
+     */
 }
 
-//    Offer o1 = new Offer("Colgate", 133.42, 5);
-//    Offer o2 = new Offer("BT", 98.32, 5);
-//    Offer o3 = new Offer("Lenovo", 32.2, 5);
-//    Offer o4 = new Offer("Redragon", 45.32, 5);

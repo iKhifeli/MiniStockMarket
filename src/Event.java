@@ -1,15 +1,25 @@
 public class Event {
-    private enum event{
+    public enum event{
         PRICE_DECREASE,
         PRICE_INCREASE,
-        AMOUNT_INCREASE,
-        AMOUNT_DECREASE,
         INACTIVE_OFFER,
         ACTIVE_OFFER;
     }
     private double priceLimit;
     private int amountLimit;
-    private event eventType;
+    private event eventType = event.ACTIVE_OFFER;
+    private Offer offer;
+
+    public Event(Offer offer, double priceLimit, int amountLimit, event eventType){
+        this.amountLimit = amountLimit;
+        this.priceLimit = priceLimit;
+        this.eventType = eventType;
+        this.offer = offer;
+    }
+
+    public Offer getOffer() {
+        return offer;
+    }
 
     public double getPriceLimit() {
         return priceLimit;

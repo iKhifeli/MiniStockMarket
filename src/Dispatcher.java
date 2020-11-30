@@ -2,20 +2,27 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Dispatcher {
-    private CopyOnWriteArrayList<Company> companies;
+    private static CopyOnWriteArrayList<Company> companies;
+    private static CopyOnWriteArrayList<Event> events;
     private static Server sv;
 
     public Dispatcher(List<Company> companies, Server sv) {
-        this.companies = new CopyOnWriteArrayList<>(companies);
-        this.sv = sv;
+        Dispatcher.companies = new CopyOnWriteArrayList<Company>(companies);
+        Dispatcher.events = new CopyOnWriteArrayList<Event>();
+        Dispatcher.sv = sv;
     }
 
-    public void sendEvent(Event e, Company c){
-
+    public static void sendEvent(Company company, Event e){
+        for (Event event : events) {
+            if(event.getOffer().getName().equals(e.getOffer().getName())){
+                System.out.println("Match!");
+            }
+        }
     }
 
-    public void registerListener(Event e, Offer offer){
-
+    public void registerListener(Buyer buyer, Event e){
+        events.add(e);
+        //e.getOffer().attachObserver(buyer);
     }
 
     public void addCompany(Company c){

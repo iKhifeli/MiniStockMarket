@@ -6,6 +6,7 @@ public class Server {
         this.db = db;
     }
 
+    public Server() {    }
 //    public static void operate(Client client){
 //        if(client.isBuyer){
 //            System.out.println("The client " + client.getName() + " is a buyer");

@@ -11,31 +11,23 @@ public abstract class Client {
 
 class Buyer extends Client implements Runnable{
     private Random rand = new Random();
-    private boolean wantsToTrade;
-    private String wantedOffer;
-    private int wantedQuantity;
+    private Offer wantedOffer;
     private ArrayList<Offer> assets = new ArrayList<Offer>();
 
-    public Buyer(String wantedOffer, int wantedQuantity, Server server, String name) {
-        this.wantedOffer = wantedOffer;
-        this.wantedQuantity = wantedQuantity;
+    public Buyer(Server server, Offer wantedOffer, String name) {
         balance = 1 + (10000 - 1) * rand.nextDouble();
+        this.wantedOffer = wantedOffer;
         //wantsToTrade = rand.nextBoolean();
-        wantsToTrade = true;
         this.name = name;
+    }
+
+    public Offer getWantedOffer() {
+        return wantedOffer;
     }
 
     @Override
     public String getName() {
         return name;
-    }
-
-    public String getWantedOffer() {
-        return wantedOffer;
-    }
-
-    public int getWantedQuantity() {
-        return wantedQuantity;
     }
 
     public double getBalance() {
@@ -57,6 +49,7 @@ class Buyer extends Client implements Runnable{
         }
         return res.toString();
     }
+
 
     @Override
     public void run() {

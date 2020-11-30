@@ -5,14 +5,14 @@ public class Company extends Client implements Runnable{
 
     private String name;
     private double balance;
-    private final CopyOnWriteArrayList<Offer> offers;
-    private final CopyOnWriteArrayList<Buyer> observers;
+    private final List<Offer> offers;
+    //private final List<Buyer> observers;
 
 
-    public Company(String name, List<Offer> offers, List<Buyer> observers) {
+    public Company(String name, List<Offer> offers) {
         this.name = name;
         this.offers = new CopyOnWriteArrayList<>(offers);
-        this.observers = new CopyOnWriteArrayList<>(observers);
+        //this.observers = new CopyOnWriteArrayList<>();
     }
 
     public void setBalance(double balance) {
@@ -27,6 +27,27 @@ public class Company extends Client implements Runnable{
         return this.name;
     }
 
+    public void modifyOffer(Offer offer, double value, int quantity){
+        if (offers.contains(offer)){
+            double aux_val = offer.getValue();
+            offer.setQuantity(quantity);
+            offer.setValue(value);
+            Event.event event;
+            if(quantity == 0){
+                event = Event.event.INACTIVE_OFFER;
+            }
+            else if(aux_val > value){
+                event = Event.event.PRICE_DECREASE;
+            }
+            else {
+                event = Event.event.PRICE_INCREASE;
+            }
+            Event new_event = new Event(offer, value, quantity, event);
+
+            Dispatcher.sendEvent(this, new_event);
+        }
+    }
+
     public synchronized void addOffer(Offer new_offer){
         for (Offer offer : offers) {
             if (offer.getName().equals(new_offer.getName())) {
@@ -34,12 +55,21 @@ public class Company extends Client implements Runnable{
             }
         }
         offers.add(new_offer);
+        new_offer.setCompany(this);
     }
+
+    /*
+    public void printObservers(){
+        for (Buyer buyer:observers) {
+            System.out.println(buyer.getName());
+        }
+    }
+
 
     public synchronized void attachObserver(Buyer b) {
         observers.add(b);
     }
-
+*/
     @Override
     public void run() {
 //        Server.operate(this);
