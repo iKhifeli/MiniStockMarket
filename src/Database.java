@@ -3,23 +3,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Database {
-    private final CopyOnWriteArrayList<Offer> offers;
-
-    public Database(List<Offer> offers) {
-        this.offers = new CopyOnWriteArrayList<>(offers);
-    }
-
     public String printOffers(){
-        StringBuilder res = new StringBuilder();
-        if(!offers.isEmpty()) {
-            for (Offer offer : offers) {
-                res.append(offer.getName()).append(", Value: ").append(offer.getValue()).append(", Amount available: ").append(offer.getQuantity()).append("\n");
-            }
-        }
-        return res.toString();
+//        StringBuilder res = new StringBuilder();
+//        if(!companies.isEmpty()) {
+//            for (Company company : companies) {
+//                res.append(offer.getName()).append(", Value: ").append(offer.getValue()).append(", Amount available: ").append(offer.getQuantity()).append("\n");
+//            }
+//        }
+//        return res.toString();
+        return "";
     }
 
-    private synchronized void accessOffer(Client client, int wanted_quantity, Offer offer) {
+    private synchronized void accessOffer(Buyer buyer, int wanted_quantity, Offer offer) {
         while(!offer.hasAvailability()){
             try{
                 wait();
@@ -33,48 +28,38 @@ public class Database {
         int current_quantity = offer.getQuantity();
         offer.setQuantity(current_quantity - wanted_quantity);
         Offer temp_offer = new Offer(offer.getName(), offer.getValue(), wanted_quantity, offer.getDate());
-        ((Buyer) client).addAsset(temp_offer);
-        double newBalance = ((Buyer) client).getBalance() - (wanted_quantity * offer.getValue());
-        ((Buyer) client).setBalance(newBalance);
+        buyer.addAsset(temp_offer);
+        double newBalance = buyer.getBalance() - (wanted_quantity * offer.getValue());
+        buyer.setBalance(newBalance);
         offer.getCompany().setBalance(wanted_quantity * offer.getValue());
+        Event new_event;
         if (offer.getQuantity() == 0) {
-            offers.remove(offer);
+            new_event = new Event(offer, offer.getValue(), offer.getQuantity(), Event.event.INACTIVE_OFFER);
+            offer.getCompany().removeOffer(offer);
+        }else{
+            new_event = new Event(offer, offer.getValue(), offer.getQuantity(), Event.event.AMOUNT_DECREASE);
         }
-        System.out.println("The buyer " + ((Buyer)client).getName() + " has purchased a number of " + wanted_quantity + " of " + offer.getName() + "-----------------------------------------------");
+        Dispatcher.sendEvent(new_event);
+        System.out.println("The buyer " + buyer.getName() + " has purchased a number of " + wanted_quantity + " of " + offer.getName() + "-----------------------------------------------");
 
         offer.setAvailability(true);
         notify();
     }
 
-    public boolean buyOffer(Client client, String wanted_offer, int wanted_quantity){
-        for (Offer offer : offers) {
-            if (wanted_offer.equals(offer.getName())) {
-                if (offer.getQuantity() >= wanted_quantity) {
-                    synchronized (offer) {
-                        if (((Buyer) client).getBalance() >= wanted_quantity * offer.getValue()) {
-                            accessOffer(client, wanted_quantity, offer);
-                            return true;
-                        }
-                    }
-                    System.out.println("The buyer " + ((Buyer) client).getName() + " does not have enough money for the quantity of shares he wants");
-                    return false;
-                }
-                System.out.println("The buyer " + ((Buyer) client).getName() + " wants to buy a larger amount of shares that the ones available");
-                return false;
-            }
+    public boolean buyOffer(Buyer buyer, Offer wanted_offer, int wanted_quantity){
+        if (wanted_offer.getQuantity() >= wanted_quantity){
+           synchronized(wanted_offer){
+               if (buyer.getBalance() >= wanted_quantity * wanted_offer.getValue()) {
+                    accessOffer(buyer, wanted_quantity, wanted_offer);
+                    return true;
+               }else{
+                   System.out.println("The buyer " + buyer.getName() + " does not have enough money for the quantity of shares he wants");
+                   return false;
+               }
+           }
+        }else{
+            System.out.println("The buyer " + buyer.getName() + " wants to buy a larger amount of shares that the ones available");
+            return false;
         }
-        System.out.println("The buyer " + ((Buyer) client).getName() + " did not find something he liked: " + wanted_offer);
-        return false;
-    }
-
-    public synchronized boolean listNewOffer(Offer new_offer){
-        for (Offer offer : offers) {
-            if (offer.getName().equals(new_offer.getName())) {
-                return false;
-            }
-        }
-        offers.add(new_offer);
-        System.out.println("The new offer " + new_offer.getName() + " has been added to DB :)");
-        return true;
     }
 }

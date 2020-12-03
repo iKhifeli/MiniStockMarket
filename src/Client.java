@@ -12,11 +12,13 @@ public abstract class Client {
 class Buyer extends Client implements Runnable{
     private Random rand = new Random();
     private Offer wantedOffer;
+    private int wantedQuantity;
     private ArrayList<Offer> assets = new ArrayList<Offer>();
 
-    public Buyer(Server server, Offer wantedOffer, String name) {
+    public Buyer(Offer wantedOffer, int wantedQuantity, String name) {
         balance = 1 + (10000 - 1) * rand.nextDouble();
         this.wantedOffer = wantedOffer;
+        this.wantedQuantity = wantedQuantity;
         //wantsToTrade = rand.nextBoolean();
         this.name = name;
     }
@@ -36,6 +38,14 @@ class Buyer extends Client implements Runnable{
 
     public void setBalance(double newBalance){
         balance = newBalance;
+    }
+
+    public int getWantedQuantity() {
+        return wantedQuantity;
+    }
+
+    public void setWantedQuantity(int wantedQuantity) {
+        this.wantedQuantity = wantedQuantity;
     }
 
     // The buyer will add to its assets and offer after the purchase;

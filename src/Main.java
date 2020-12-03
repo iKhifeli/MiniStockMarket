@@ -11,10 +11,8 @@ public class Main {
         Company c1 = new Company("Company", offers1);
         Company c2 = new Company("Other Company", offers2);
 
-        Server server = new Server();
-
         List<Company> companies = new ArrayList<Company>();
-        Dispatcher dispatcher = new Dispatcher(companies, server);
+        Dispatcher dispatcher = new Dispatcher(companies);
 
 
 
@@ -29,9 +27,9 @@ public class Main {
         c2.addOffer(o3);
         c2.addOffer(o4);
 
-        Buyer b1 = new Buyer(server, o1, "Gigel");
-        Buyer b2 = new Buyer(server, o2, "Marcel");
-        Buyer b3 = new Buyer(server, o3, "Cornel");
+        Buyer b1 = new Buyer(o1, 50, "Gigel");
+        Buyer b2 = new Buyer(o2, 50, "Marcel");
+        Buyer b3 = new Buyer(o3, 50,"Cornel");
 
         dispatcher.registerListener(b1, new Event( b1.getWantedOffer() ,106.32, 56, Event.event.PRICE_DECREASE));
         dispatcher.registerListener(b2, new Event( b2.getWantedOffer() ,109.54, 55, Event.event.PRICE_DECREASE));

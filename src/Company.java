@@ -44,7 +44,7 @@ public class Company extends Client implements Runnable{
             }
             Event new_event = new Event(offer, value, quantity, event);
 
-            Dispatcher.sendEvent(this, new_event);
+            Dispatcher.sendEvent(new_event);
         }
     }
 
@@ -56,20 +56,16 @@ public class Company extends Client implements Runnable{
         }
         offers.add(new_offer);
         new_offer.setCompany(this);
+
+        Event new_event = new Event(new_offer, new_offer.getValue(), new_offer.getQuantity(), Event.event.ACTIVE_OFFER);
+
+        Dispatcher.sendEvent(new_event);
     }
 
-    /*
-    public void printObservers(){
-        for (Buyer buyer:observers) {
-            System.out.println(buyer.getName());
-        }
+    public synchronized void removeOffer(Offer offer){
+        offers.remove(offer);
     }
 
-
-    public synchronized void attachObserver(Buyer b) {
-        observers.add(b);
-    }
-*/
     @Override
     public void run() {
 //        Server.operate(this);
