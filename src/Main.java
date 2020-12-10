@@ -8,11 +8,11 @@ public class Main {
         List<Offer> offers2 = new ArrayList<Offer>();
 
 
-        Company c1 = new Company("Company", offers1);
-        Company c2 = new Company("Other Company", offers2);
+        Company c1 = new Company("Company", offers1, observers);
+        Company c2 = new Company("Other Company", offers2, observers);
 
-        List<Company> companies = new ArrayList<Company>();
-        Dispatcher dispatcher = new Dispatcher(companies);
+        //List<Company> companies = new ArrayList<Company>();
+        Dispatcher dispatcher = new Dispatcher();
 
 
 
@@ -27,17 +27,22 @@ public class Main {
         c2.addOffer(o3);
         c2.addOffer(o4);
 
-        Buyer b1 = new Buyer(o1, 50, "Gigel");
-        Buyer b2 = new Buyer(o2, 50, "Marcel");
-        Buyer b3 = new Buyer(o3, 50,"Cornel");
+        Database db = new Database();
+
+        Buyer b1 = new Buyer(o1, 50, "Gigel", db);
+        Buyer b2 = new Buyer(o2, 50, "Marcel", db);
+        Buyer b3 = new Buyer(o3, 50,"Cornel", db);
+        Buyer b4 = new Buyer(o2, 50,"Marinel", db);
 
         dispatcher.registerListener(b1, new Event( b1.getWantedOffer() ,106.32, 56, Event.event.PRICE_DECREASE));
         dispatcher.registerListener(b2, new Event( b2.getWantedOffer() ,109.54, 55, Event.event.PRICE_DECREASE));
         dispatcher.registerListener(b2, new Event( b2.getWantedOffer() ,112.45, 53, Event.event.PRICE_DECREASE));
         dispatcher.registerListener(b3, new Event( b3.getWantedOffer() ,120.31, 52, Event.event.PRICE_DECREASE));
+        dispatcher.registerListener(b4, new Event( b4.getWantedOffer() ,120.31, 52, Event.event.PRICE_DECREASE));
 
         c1.modifyOffer(o1, 105.33, 52);
-        c2.modifyOffer(o3, 105.33, 52);
+        c1.modifyOffer(o2, 95.31, 50);
+        c2.modifyOffer(o3, 30, 52);
 
     }
 }

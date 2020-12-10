@@ -14,13 +14,15 @@ class Buyer extends Client implements Runnable{
     private Offer wantedOffer;
     private int wantedQuantity;
     private ArrayList<Offer> assets = new ArrayList<Offer>();
+    private Database db;
 
-    public Buyer(Offer wantedOffer, int wantedQuantity, String name) {
+    public Buyer(Offer wantedOffer, int wantedQuantity, String name, Database db) {
         balance = 1 + (10000 - 1) * rand.nextDouble();
         this.wantedOffer = wantedOffer;
         this.wantedQuantity = wantedQuantity;
         //wantsToTrade = rand.nextBoolean();
         this.name = name;
+        this.db = db;
     }
 
     public Offer getWantedOffer() {
@@ -60,9 +62,12 @@ class Buyer extends Client implements Runnable{
         return res.toString();
     }
 
-
+    public void startThread(){
+        Thread thread = new Thread(this);
+        thread.start();
+    }
     @Override
     public void run() {
-//        Server.operate(this);
+        db.buyOffer(this, wantedOffer, wantedQuantity);
     }
 }

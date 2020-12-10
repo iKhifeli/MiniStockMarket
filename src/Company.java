@@ -42,9 +42,10 @@ public class Company extends Client implements Runnable{
             else {
                 event = Event.event.PRICE_INCREASE;
             }
+
             Event new_event = new Event(offer, value, quantity, event);
 
-            Dispatcher.sendEvent(new_event);
+            Dispatcher.eventHandler(new_event);
         }
     }
 
@@ -59,7 +60,7 @@ public class Company extends Client implements Runnable{
 
         Event new_event = new Event(new_offer, new_offer.getValue(), new_offer.getQuantity(), Event.event.ACTIVE_OFFER);
 
-        Dispatcher.sendEvent(new_event);
+        Dispatcher.eventHandler(new_event);
     }
 
     public synchronized void removeOffer(Offer offer){

@@ -1,18 +1,4 @@
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-
 public class Database {
-    public String printOffers(){
-//        StringBuilder res = new StringBuilder();
-//        if(!companies.isEmpty()) {
-//            for (Company company : companies) {
-//                res.append(offer.getName()).append(", Value: ").append(offer.getValue()).append(", Amount available: ").append(offer.getQuantity()).append("\n");
-//            }
-//        }
-//        return res.toString();
-        return "";
-    }
 
     private synchronized void accessOffer(Buyer buyer, int wanted_quantity, Offer offer) {
         while(!offer.hasAvailability()){
@@ -39,7 +25,7 @@ public class Database {
         }else{
             new_event = new Event(offer, offer.getValue(), offer.getQuantity(), Event.event.AMOUNT_DECREASE);
         }
-        Dispatcher.sendEvent(new_event);
+        Dispatcher.eventHandler(new_event);
         System.out.println("The buyer " + buyer.getName() + " has purchased a number of " + wanted_quantity + " of " + offer.getName() + "-----------------------------------------------");
 
         offer.setAvailability(true);
