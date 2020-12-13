@@ -32,20 +32,17 @@ public class Database {
         notify();
     }
 
-    public boolean buyOffer(Buyer buyer, Offer wanted_offer, int wanted_quantity){
+    public void buyOffer(Buyer buyer, Offer wanted_offer, int wanted_quantity){
         if (wanted_offer.getQuantity() >= wanted_quantity){
            synchronized(wanted_offer){
                if (buyer.getBalance() >= wanted_quantity * wanted_offer.getValue()) {
                     accessOffer(buyer, wanted_quantity, wanted_offer);
-                    return true;
                }else{
                    System.out.println("The buyer " + buyer.getName() + " does not have enough money for the quantity of shares he wants");
-                   return false;
                }
            }
         }else{
             System.out.println("The buyer " + buyer.getName() + " wants to buy a larger amount of shares that the ones available");
-            return false;
         }
     }
 }

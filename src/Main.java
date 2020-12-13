@@ -8,14 +8,14 @@ public class Main {
         List<Offer> offers2 = new ArrayList<Offer>();
 
 
-        Company c1 = new Company("Company", offers1, observers);
-        Company c2 = new Company("Other Company", offers2, observers);
+        Company c1 = new Company("Company", offers1);
+        Company c2 = new Company("Other Company", offers2);
 
         //List<Company> companies = new ArrayList<Company>();
         Dispatcher dispatcher = new Dispatcher();
 
 
-
+        //@TODO : decide wether the date stays or it goes away
         Offer o1 = new Offer("Colgate", 133.42, 100, "2011");
         Offer o2 = new Offer("BT", 98.32, 100, "2017");
         Offer o3 = new Offer("Lenovo", 32.2, 100, "2013");
@@ -39,10 +39,35 @@ public class Main {
         dispatcher.registerListener(b2, new Event( b2.getWantedOffer() ,112.45, 53, Event.event.PRICE_DECREASE));
         dispatcher.registerListener(b3, new Event( b3.getWantedOffer() ,120.31, 52, Event.event.PRICE_DECREASE));
         dispatcher.registerListener(b4, new Event( b4.getWantedOffer() ,120.31, 52, Event.event.PRICE_DECREASE));
+        dispatcher.registerListener(b1, new Event( b1.getWantedOffer() ,170.32, 56, Event.event.PRICE_INCREASE));
+        dispatcher.registerListener(b2, new Event( b2.getWantedOffer() ,110.54, 55, Event.event.PRICE_INCREASE));
+        dispatcher.registerListener(b2, new Event( b2.getWantedOffer() ,160.23, 53, Event.event.PRICE_INCREASE));
+        dispatcher.registerListener(b3, new Event( b3.getWantedOffer() ,200.11, 52, Event.event.PRICE_INCREASE));
+        dispatcher.registerListener(b4, new Event( b4.getWantedOffer() ,145.90, 52, Event.event.PRICE_INCREASE));
 
+        /*
         c1.modifyOffer(o1, 105.33, 52);
         c1.modifyOffer(o2, 95.31, 50);
         c2.modifyOffer(o3, 30, 52);
+        */
+
+        Thread t1 = new Thread(c1);
+        Thread t2 = new Thread(c2);
+        t1.start();t2.start();
+        try{
+            t1.join();
+            t2.join();
+        }catch (InterruptedException e){
+            System.out.println(e.toString());
+        }
+        System.out.println("--------------------------------------------");
+        System.out.println("Number of unhandled events left : " + dispatcher.numberOfUnhandledEvents());
+        System.out.println("--------------------------------------------");
+        System.out.println(c1.getName());
+        System.out.println(c1.toString());
+        System.out.println("--------------------------------------------");
+        System.out.println(c2.getName());
+        System.out.println(c2.toString());
 
     }
 }

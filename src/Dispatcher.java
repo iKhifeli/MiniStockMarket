@@ -47,11 +47,13 @@ public class Dispatcher {
         }
     }
 
-
-
     public void registerListener(Buyer buyer, Event e){
         events.add(e);
         e.setBuyer(buyer);
+    }
+
+    public int numberOfUnhandledEvents(){
+        return events.size();
     }
 
 }

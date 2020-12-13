@@ -70,6 +70,11 @@ public class Offer {
     public synchronized void setAvailability(boolean availability) {
         this.availability = availability;
     }
+
+    public String toString(){
+        return name + ", " + value + ", " + quantity + "| ";
+    }
+
     /*
     public synchronized void attachObserver(Buyer buyer){
         company.attachObserver(buyer);
