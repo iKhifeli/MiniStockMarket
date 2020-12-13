@@ -40,21 +40,24 @@ class Company extends Client implements Runnable{
 
     public void modifyOffer(Offer offer, double value, int quantity){
         if (offers.contains(offer)){
-            double aux_val = offer.getValue();
-            offer.setQuantity(quantity);
-            offer.setValue(value);
-            Event.event event;
+            Event.event event = Event.event.ACTIVE_OFFER;
             if(quantity == 0){
                 event = Event.event.INACTIVE_OFFER;
             }
             else if (offer.getQuantity() > quantity){
                 event = Event.event.AMOUNT_DECREASE;
+                offer.setQuantity(quantity);
             }
-            else if(aux_val > value){
+            else if(offer.getValue() > value){
                 event = Event.event.PRICE_DECREASE;
+                offer.setValue(value);
+            }
+            else if(offer.getValue() < value){
+                event = Event.event.PRICE_INCREASE;
+                offer.setValue(value);
             }
             else {
-                event = Event.event.PRICE_INCREASE;
+                System.out.println("Amount should not increase!");
             }
 
             Event new_event = new Event(offer, value, quantity, event);
@@ -121,6 +124,7 @@ class Buyer extends Client implements Runnable{
     private int wantedQuantity;
     private ArrayList<Offer> assets = new ArrayList<Offer>();
     private Database db;
+    Thread thread = new Thread(this);
 
     public Buyer(Offer wantedOffer, int wantedQuantity, String name, Database db) {
         balance = 1 + (10000 - 1) * rand.nextDouble();
@@ -169,9 +173,17 @@ class Buyer extends Client implements Runnable{
     }
 
     public void startThread(){
-        Thread thread = new Thread(this);
         thread.start();
     }
+
+    public void joinThread(){
+        try{
+            thread.join();
+        }catch(InterruptedException e){
+            System.out.println(e.toString());
+        }
+    }
+
     @Override
     public void run() {
         db.buyOffer(this, wantedOffer, wantedQuantity);
