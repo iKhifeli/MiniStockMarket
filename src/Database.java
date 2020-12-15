@@ -26,7 +26,7 @@ public class Database {
             new_event = new Event(offer, offer.getValue(), offer.getQuantity(), Event.event.AMOUNT_DECREASE);
         }
         Dispatcher.eventHandler(new_event);
-        System.out.println("The buyer " + buyer.getName() + " has purchased a number of " + wanted_quantity + " of " + offer.getName() + "-----------------------------------------------");
+        System.out.println("************ The buyer " + buyer.getName() + " has purchased a number of " + wanted_quantity + " of " + offer.getName() + " ************");
 
         offer.setAvailability(true);
         notify();
@@ -38,7 +38,7 @@ public class Database {
                if (buyer.getBalance() >= wanted_quantity * wanted_offer.getValue()) {
                     accessOffer(buyer, wanted_quantity, wanted_offer);
                }else{
-                   System.out.println("The buyer " + buyer.getName() + " does not have enough money for the quantity of shares he wants");
+                   System.out.println("    EVENT NOT REMOVED! The buyer " + buyer.getName() + " does not have enough money for the quantity of shares he wants");
                }
            }
         }else{

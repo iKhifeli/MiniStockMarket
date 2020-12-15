@@ -17,13 +17,11 @@ class Company extends Client implements Runnable{
     private String name;
     private double balance;
     private final List<Offer> offers;
-    //private final List<Buyer> observers;
 
 
     public Company(String name, List<Offer> offers) {
         this.name = name;
         this.offers = new CopyOnWriteArrayList<>(offers);
-        //this.observers = new CopyOnWriteArrayList<>();
     }
 
     public void setBalance(double balance) {
@@ -96,12 +94,15 @@ class Company extends Client implements Runnable{
             if (rand.nextBoolean()) {
                 // if we are on this branch, we will either increase the offer's price by 10% or decrease it by 10%
                 if (rand.nextBoolean()) {
+                    System.out.println("NEW EVENT : Prince increased by 10% for " + tmpOffer.getName() + ", from " + this.getName());
                     modifyOffer(tmpOffer, tmpOffer.getValue() + 0.1 * tmpOffer.getValue(), tmpOffer.getQuantity());
                 } else {
+                    System.out.println("NEW EVENT : Prince decreased by 10% for " + tmpOffer.getName() + ", from " + this.getName());
                     modifyOffer(tmpOffer, tmpOffer.getValue() - 0.1 * tmpOffer.getValue(), tmpOffer.getQuantity());
                 }
             } else {
                 // if we are on this branch, we will decrease the offer's amount by 5 units
+                System.out.println("NEW EVENT : Amount decreased by 5 units for " + tmpOffer.getName() + ", from " + this.getName());
                 modifyOffer(tmpOffer, tmpOffer.getValue(), tmpOffer.getQuantity() - 5);
             }
             tries --;
@@ -124,13 +125,11 @@ class Buyer extends Client implements Runnable{
     private int wantedQuantity;
     private ArrayList<Offer> assets = new ArrayList<Offer>();
     private Database db;
-    Thread thread = new Thread(this);
 
     public Buyer(Offer wantedOffer, int wantedQuantity, String name, Database db) {
         balance = 1 + (10000 - 1) * rand.nextDouble();
         this.wantedOffer = wantedOffer;
         this.wantedQuantity = wantedQuantity;
-        //wantsToTrade = rand.nextBoolean();
         this.name = name;
         this.db = db;
     }
@@ -151,15 +150,7 @@ class Buyer extends Client implements Runnable{
     public void setBalance(double newBalance){
         balance = newBalance;
     }
-/*
-    public int getWantedQuantity() {
-        return wantedQuantity;
-    }
 
-    public void setWantedQuantity(int wantedQuantity) {
-        this.wantedQuantity = wantedQuantity;
-    }
-*/
     // The buyer will add to its assets and offer after the purchase;
     public void addAsset(Offer offer){
         assets.add(offer);
@@ -173,15 +164,8 @@ class Buyer extends Client implements Runnable{
     }
 
     public void startThread(){
+        Thread thread = new Thread(this);
         thread.start();
-    }
-
-    public void joinThread(){
-        try{
-            thread.join();
-        }catch(InterruptedException e){
-            System.out.println(e.toString());
-        }
     }
 
     @Override
